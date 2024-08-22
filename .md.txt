@@ -1,0 +1,17 @@
+1. 3 changes can improve game peformance
+. Change all images with width/height being mutiple of 4 an compressed them to RGB(A) Compress ASTC 12x12 block
+. Stop Using ResourceLoad to much => Using singleton to Load in Instance using ( example for Item and cell)
+. Using Object Pool => Load Only one Items into Pool and call when needed
+2. Scriptable Object load in ResourceManager and add new void NormalItems change aplly in Board cs154, cs107
+3. Restart Btn object in PanelGame code Restart in GameManager
+4. New void FillGapsWithNewItems2 and GetSmallesrNormalType in call Broad cs 161
+
+Advanatage of the project
+. Easy reading code
+. Simple design 
+. Object is Encapsulation;
+Disadvantages of the project 
+. Using to much Resource.Load => affect game performance
+. Too many unnessary Items => using 1 items and chage Sprites 
+. Instanste and Destory to much = > using pool
+. Lack Particle Systems
