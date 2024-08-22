@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -103,7 +104,7 @@ public class Board
                 item.SetType(Utils.GetRandomNormalTypeExcept(types.ToArray()));
                 item.SetView();
                 item.SetViewRoot(m_root);
-
+                item.ReSkin();
                 cell.Assign(item);
                 cell.ApplyItemPosition(false);
             }
@@ -150,13 +151,85 @@ public class Board
                 item.SetType(Utils.GetRandomNormalType());
                 item.SetView();
                 item.SetViewRoot(m_root);
+                item.ReSkin();
 
                 cell.Assign(item);
                 cell.ApplyItemPosition(true);
             }
         }
     }
+    NormalItem.eNormalType GetSmallesrNormalType(List<NormalItem.eNormalType> listexpect)
+    {
+        var list = new List<NormalItem.eNormalType>();
+        foreach (var cell in m_cells)
+        {
+            NormalItem item = cell.Item as NormalItem;
+            if (item != null)
+            {
+                if (!listexpect.Contains(item.ItemType))
+                    list.Add(item.ItemType);
+            }
+            
+        }
+        return list.GroupBy(x => x)
+                   .OrderBy(g => g.Count())
+                   .First()
+                   .Key;
+    }
+    internal void FillGapsWithNewItems2()
+    {
+        for (int x = 0; x < boardSizeX; x++)
+        {
+            for (int y = 0; y < boardSizeY; y++)
+            {
+                Cell cell = m_cells[x, y];
+                if (!cell.IsEmpty) continue;
 
+                NormalItem item = new NormalItem();
+                List<NormalItem.eNormalType> types = new List<NormalItem.eNormalType>();
+                if (cell.NeighbourBottom != null)
+                {
+                    NormalItem nitem = cell.NeighbourBottom.Item as NormalItem;
+                    if (nitem != null)
+                    {
+                        types.Add(nitem.ItemType);
+                    }
+                }
+
+                if (cell.NeighbourLeft != null)
+                {
+                    NormalItem nitem = cell.NeighbourLeft.Item as NormalItem;
+                    if (nitem != null)
+                    {
+                        types.Add(nitem.ItemType);
+                    }
+                }
+                if (cell.NeighbourRight != null)
+                {
+                    NormalItem nitem = cell.NeighbourRight.Item as NormalItem;
+                    if (nitem != null)
+                    {
+                        types.Add(nitem.ItemType);
+                    }
+                }
+                if (cell.NeighbourUp != null)
+                {
+                    NormalItem nitem = cell.NeighbourUp.Item as NormalItem;
+                    if (nitem != null)
+                    {
+                        types.Add(nitem.ItemType);
+                    }
+                }
+                item.SetType(GetSmallesrNormalType(types));
+                item.SetView();
+                item.SetViewRoot(m_root);
+                item.ReSkin();
+
+                cell.Assign(item);
+                cell.ApplyItemPosition(true);
+            }
+        }
+    }
     internal void ExplodeAllItems()
     {
         for (int x = 0; x < boardSizeX; x++)
