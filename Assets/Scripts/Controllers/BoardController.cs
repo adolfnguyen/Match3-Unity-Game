@@ -238,7 +238,7 @@ public class BoardController : MonoBehaviour
 
         yield return new WaitForSeconds(0.2f);
 
-        m_board.FillGapsWithNewItems();
+        m_board.FillGapsWithNewItems2();
 
         yield return new WaitForSeconds(0.2f);
 

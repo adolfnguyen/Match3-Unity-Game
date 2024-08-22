@@ -21,7 +21,10 @@ public class NormalItem : Item
     {
         ItemType = type;
     }
-
+    public void ReSkin()
+    {
+        View.GetComponent<SpriteRenderer>().sprite = ResourceManager.Instance.NewTextureDataSO.listNewTexture[(int)ItemType];
+    }
     protected override string GetPrefabName()
     {
         string prefabname = string.Empty;

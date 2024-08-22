@@ -18,10 +18,13 @@ public class Item
 
         if (!string.IsNullOrEmpty(prefabname))
         {
-            GameObject prefab = Resources.Load<GameObject>(prefabname);
+            //GameObject prefab = Resources.Load<GameObject>(prefabname);
+            GameObject prefab = ResourceManager.Instance.GetObjInPool();
             if (prefab)
             {
-                View = GameObject.Instantiate(prefab).transform;
+                //View = GameObject.Instantiate(prefab).transform;
+                View = prefab.transform;
+                View.transform.localScale = Vector3.one;
             }
         }
     }
@@ -101,7 +104,8 @@ public class Item
             View.DOScale(0.1f, 0.1f).OnComplete(
                 () =>
                 {
-                    GameObject.Destroy(View.gameObject);
+                    //GameObject.Destroy(View.gameObject);
+                    ResourceManager.Instance.ReturnObject(View.gameObject);
                     View = null;
                 }
                 );
@@ -132,7 +136,8 @@ public class Item
 
         if (View)
         {
-            GameObject.Destroy(View.gameObject);
+            //GameObject.Destroy(View.gameObject);
+            ResourceManager.Instance.ReturnObject(View.gameObject);
             View = null;
         }
     }
